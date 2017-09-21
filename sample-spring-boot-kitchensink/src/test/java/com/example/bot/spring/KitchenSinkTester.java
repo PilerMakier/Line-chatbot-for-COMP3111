@@ -86,4 +86,6 @@ public class KitchenSinkTester {
 		assertThat(!thrown).isEqualTo(true);
 		assertThat(result).isEqualTo("Who say I am fine?");
 	}
+	
+	
 }
