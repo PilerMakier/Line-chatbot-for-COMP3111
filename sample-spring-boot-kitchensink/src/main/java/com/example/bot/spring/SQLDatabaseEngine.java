@@ -15,39 +15,38 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 	@Override
 	String search(String text) throws Exception {
 		// Write your code here
-		
+
 		String result = null;
-		BufferedReader br = null;
-		InputStreamReader isr = null;
+
 		try {
-			// isr = new InputStreamReader(this.getClass().getResourceAsStream(FILENAME));
-			// br = new BufferedReader(isr);
-			// String sCurrentLine;
 
 			Connection connection = getConnection();
-			PreparedStatement stmt = connection
-					.prepareStatement("SELECT response FROM line_chatbot where keyword like concat('%', ?, '%')");
+			PreparedStatement stmt = connection.prepareStatement("SELECT keyword, response FROM line_chatbot");
 
-			stmt.setString(1, text);
+			// stmt.setString(1, text);
+
 			ResultSet rs = stmt.executeQuery();
 
-	//		while (result == null
-			// && (sCurrentLine = br.readLine()) != null
-	//		) {
-				// String[] parts = sCurrentLine.split(":");
-	//			if (text.toLowerCase().contains(rs.getString(1).toLowerCase())) {
-					result = rs.getString(1);
-//				}
-		//	}
+			while (rs.next()) {
+				if (text.toLowerCase().contains(rs.getString(1).toLowerCase())) {
+					result = rs.getString(2);
+					break;
+				}
+			}
+
+			
+
+			rs.close();
+			stmt.close();
+			connection.close();
 		} catch (Exception e) {
 			log.info(e.toString());
-		} 
+		}
 		if (result != null)
 			return result;
 		throw new Exception("NOT FOUND");
-	}
 
-	private final String FILENAME = "/static/database.txt";
+	}
 
 	private Connection getConnection() throws URISyntaxException, SQLException {
 		Connection connection;
