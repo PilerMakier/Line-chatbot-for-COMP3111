@@ -26,32 +26,22 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 
 			Connection connection = getConnection();
 			PreparedStatement stmt = connection
-					.prepareStatement("SELECT * FROM line_chatbot where keyword like concat('%', ?, '%')");
+					.prepareStatement("SELECT response FROM line_chatbot where keyword like concat('%', ?, '%')");
 
 			stmt.setString(1, text);
 			ResultSet rs = stmt.executeQuery();
 
-			while (result == null
+	//		while (result == null
 			// && (sCurrentLine = br.readLine()) != null
-			) {
+	//		) {
 				// String[] parts = sCurrentLine.split(":");
-				if (text.toLowerCase().contains(rs.getString(1).toLowerCase())) {
-					result = rs.getString(2);
-				}
-			}
+	//			if (text.toLowerCase().contains(rs.getString(1).toLowerCase())) {
+					result = rs.getString(1);
+//				}
+		//	}
 		} catch (Exception e) {
 			log.info(e.toString());
 		} 
-		//finally {
-//			try {
-//				// if (br != null)
-//				// br.close();
-//				// if (isr != null)
-//				// isr.close();
-//			} catch (IOException ex) {
-//				log.info("IOException while closing file: {}", ex.toString());
-//			}
-		//}
 		if (result != null)
 			return result;
 		throw new Exception("NOT FOUND");
